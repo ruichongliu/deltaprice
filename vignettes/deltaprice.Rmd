@@ -1,0 +1,58 @@
+---
+title: "Delta Price Scrapper"
+author: "Lex Liu"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+`deltaprice` package aims to scrape Delta Airline ticket price. Given a list of departure and return dates, this package will help you collect ticket prices. This package aims to help people plan the most budget trip. Also, this package works as a starter code for anyone thinking to scrape a dynamic webpage using `Selenium` in `R`. 
+
+## Dependencies
+
+Before running `RSelenium`, the following is required:
+
+- install a version of [java SE]("https://www.oracle.com/technetwork/java/javase/overview/index.html") on your machine
+- download a [standalone selenium server]("https://bit.ly/2TlkRyu")
+
+When you have the items above ready, run the following command in the terminal prior to scraping. Remember to **navigate** to the folder where the .jar file sits and **replace 3.9.1** with the version on your machine. Also, the selenium server above works for most of the mordern browsers, and if it is not the case for you, visit [Selenium]("https://www.seleniumhq.org/") for more options.
+```
+    java -jar selenium-server-standalone-3.9.1.jar
+```
+
+## Example
+
+```
+library(RSelenium)
+library(deltaprice)
+remDr <- remoteDriver(browserName="chrome", remoteServerAddr="localhost", port=4444L)
+remDr$open()
+dateGrid <- data.frame("depart"=c("1/1/2019", "1/1/2019", "1/2/2019", "1/2/2019"),           
+                "return"=c("1/3/2019","1/4/2019","1/3/2019","1/4/2019"))
+price <- main("LAX", "JFK", dateGrid1, remDr)
+```
+
+## Visualization
+
+You can visualize the results. We will be using the dataset included in the package for demo.
+```{r echo=FALSE, fig.height=3.94, fig.width=7, message=FALSE, warning=F}
+data("pricedf", package="deltaprice")
+library(ggplot2)
+ggplot(pricedf, aes(departure, price, fill=departure)) + geom_violin(scale="area")
+```
+
+```{r echo=FALSE, fig.height=3.94, fig.width=7, message=FALSE, warning=FALSE}
+data("pricedf", package="deltaprice")
+library(ggplot2)
+ggplot(pricedf, aes(price)) + geom_histogram() + facet_grid(departure ~ return)
+```

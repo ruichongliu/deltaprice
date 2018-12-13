@@ -1,0 +1,14 @@
+Package: deltaprice
+Type: Package
+Title: Scrapper for Delta Airline Ticket Price
+Version: 0.1.0
+Authors@R: person("Lex", "Liu", role=c("aut", "cre"), email="rliu01@wesleyan.edu")
+Description: This package collects Delta Airline ticket prices 
+License: GPL-3
+Encoding: UTF-8
+RoxygenNote: 6.1.0
+BugReports: https://github.com/ruichongliu/deltaprice/issues
+Suggests: knitr,
+    rmarkdown
+VignetteBuilder: knitr
+LazyData: true
